@@ -1,0 +1,76 @@
+<body>
+  <h1>Welcome to Yemdivers Companion!</h1>
+  <h2>Status of the Second Galactic War</h2>
+  @if (warData(); as war) {
+    <h3>Stats</h3>
+    <p><b>- Impact Multiplier:</b> {{ war.impactMultiplier }}</p>
+    <p><b>- Active Helldivers:</b> {{ war.statistics.playerCount }}</p>
+    <p><b>- KIA Helldivers:</b> {{ war.statistics.deaths }}</p>
+    <p><b>- Terminid kills:</b> {{ war.statistics.terminidKills }}</p>
+    <p><b>- Automaton kills:</b> {{ war.statistics.automatonKills }}</p>    
+    <p><b>- Illuminate kills:</b> {{ war.statistics.illuminateKills }}</p>
+  } @else {
+    <p>Loading...</p>
+  }
+  <hr>
+  <h3>Major Order</h3>
+  @if (majorOrderData(); as majorOrder) {
+  <p>{{ majorOrder.setting.overrideBrief }}</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Task</th>
+        <th>Progress</th>
+      </tr>
+    </thead>
+    <tbody>
+  @for (tarea of majorOrder.setting.tasks; track $index) {
+    @switch (tarea.type) {
+      @case (3) {
+        <tr>
+          <td>{{ taskLabel(tarea.type) }}</td>
+          <td>{{ enemyLabel(tarea.values[3]) }}</td>
+          <td>{{ majorOrder.progress[$index] }} / {{ tarea.values[2] }} ({{((majorOrder.progress[$index] / tarea.values[2]) * 100).toFixed(3)}}%)</td>
+        </tr>
+      }
+      @case (11) {
+        <tr>
+          <td>{{ taskLabel(tarea.type) }}</td>
+          <td>Planeta #{{ tarea.values[2] }}: {{ majorOrder.progress[$index] ? 'Liberado' : 'Pendiente' }}</td>
+        </tr>
+      }
+      @case (12) {
+        <tr>
+          <td>{{ taskLabel(tarea.type) }} - {{ getPlaneta(tarea.values[3]) }}</td>
+          <td>{{ majorOrder.progress[$index] }}%</td>
+        </tr>
+      }
+      @case (13) {
+        <tr>
+          <td>{{ taskLabel(tarea.type) }}</td>
+          <td>Planeta #{{ tarea.values[2] }}: {{ majorOrder.progress[$index] ? 'Controlado' : 'Sin controlar' }}</td>
+        </tr>
+      }
+      @default {
+        <tr>
+          <td>{{ taskLabel(tarea.type) }}</td>
+          <td>{{ tarea.values.join(', ') }} (progreso: {{ majorOrder.progress[$index] }})</td>
+        </tr>
+      }
+    }
+  }
+    </tbody>
+  </table>
+  <p>Reward: {{majorOrder.setting.reward.amount}} warbond medals</p>
+  <p>Ends in {{ horasMajorOrder() }} hours</p>
+  } @else {
+    <h4>There's no active Major Order right now! Wait for the next assigment coming from <span>Super Earth</span>.</h4>
+  }
+  <hr>
+  <h3>Last Dispatches</h3>
+  @if (dispatchData(); as dispatch) {
+    <div [innerHTML]="cleanMessage(dispatch.message)"></div>
+  } @else {
+    <p>Loading...</p>
+  }
+</body>

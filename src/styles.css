@@ -1,0 +1,360 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Big+Shoulders+Display:wght@600;800&display=swap');
+
+/* Palette and variables */
+:root {
+  /* Surfaces: gunmetal with a cool tint, not pure black */
+  --bg:        #12161b;
+  --panel:     #1a2027;
+  --panel-2:   #232b34;
+  --line:      #36414d;
+
+  /* Text */
+  --text:      #e4e7ea;
+  --muted:     #8b97a3;
+
+  /* Super Earth */
+  --yellow:    #ffe710;
+  --yellow-dim:#b8a60c;
+  --ink:       #14110a; /* text on yellow */
+
+  /* Factions (used by the map) */
+  --humans:    #4da6ff;
+  --terminids: #ffb020;
+  --automaton: #ff4d4d;
+  --illuminate:#b266ff;
+
+  /* Typography */
+  --font-display: 'Big Shoulders Display', 'Arial Narrow', Impact, sans-serif;
+  --font-body:    'Barlow', 'Segoe UI', system-ui, sans-serif;
+
+  /* Chamfered corners */
+  --cut: 12px;
+}
+
+/* Base */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--bg);
+  /* Faint grid, like a command table */
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  padding: 1.5vw;
+}
+
+/* Veil so the grid doesn't fight the text */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 22, 27, 0.9);
+  z-index: -1;
+  pointer-events: none;
+}
+
+::selection { background: var(--yellow); color: var(--ink); }
+
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+/* Font style */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 1.05;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin: 0 0 0.75rem;
+}
+
+h1 { font-size: clamp(2.6rem, 6vw, 4.2rem); color: var(--yellow); }
+
+h2 {
+  font-size: clamp(1.9rem, 4vw, 2.7rem);
+  color: var(--yellow);
+  padding-bottom: 0.4rem;
+  border-bottom: 3px solid var(--yellow);
+  margin-top: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-top: 1.5rem;
+}
+
+h4 { font-size: 1.15rem; font-weight: 600; color: var(--muted); }
+
+p { margin: 0 0 0.75rem; max-width: 70ch; }
+
+a {
+  color: var(--yellow);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+a:hover { color: #fff; }
+
+b, strong { color: var(--yellow); font-weight: 600; }
+
+small, .muted { color: var(--muted); }
+
+/* HR Separator */
+hr {
+  border: 0;
+  height: 10px;
+  margin: 2.5rem 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--yellow) 0 14px,
+    var(--bg) 14px 28px
+  );
+}
+
+/* Header */
+app-header-component { display: block; }
+
+header, nav {
+  background: var(--panel);
+  border-bottom: 3px solid var(--yellow);
+}
+
+header { 
+  padding: 0.55rem 0rem; 
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding: 0 1.25rem;
+  border-bottom: 0;
+}
+
+nav img {
+  width: 20cap;
+}
+
+nav a {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  text-decoration: none;
+  padding: 0.85rem 1rem;
+  border-bottom: 4px solid transparent;
+}
+
+nav a:hover { color: var(--yellow); background: var(--panel-2); }
+
+nav a.active,
+nav a[aria-current='page'] {
+  color: var(--yellow);
+  border-bottom-color: var(--yellow);
+}
+
+/* Buttons (chamfered corners) */
+button {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  padding: 0.5rem 1.1rem;
+  border: 0;
+  color: var(--ink);
+  background: var(--yellow);
+  clip-path: polygon(
+    var(--cut) 0, 100% 0,
+    100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%,
+    0 100%, 0 var(--cut)
+  );
+  transition: background 0.15s;
+}
+
+button:hover { background: #fff; }
+button:active { background: var(--yellow-dim); }
+
+button:disabled {
+  background: var(--line);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0 1.25rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--yellow);
+}
+
+th {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  text-align: left;
+  color: var(--ink);
+  background: var(--yellow);
+  padding: 0.55rem 0.85rem;
+}
+
+td {
+  padding: 0.6rem 0.85rem;
+  border-top: 1px solid var(--line);
+  font-variant-numeric: tabular-nums;
+}
+
+tbody tr:nth-child(even) { background: var(--panel-2); }
+tbody tr:hover { background: #2c3641; }
+
+/* Panels (aside, cards) */
+aside, .panel {
+  background: var(--panel);
+  border-left: 4px solid var(--yellow);
+  padding: 1rem 1.15rem;
+  clip-path: polygon(
+    0 0, calc(100% - var(--cut)) 0,
+    100% var(--cut), 100% 100%, 0 100%
+  );
+}
+
+aside h3, .panel h3 { margin-top: 0; }
+
+/* Forms */
+input, select, textarea {
+  font: inherit;
+  color: var(--text);
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-bottom: 3px solid var(--yellow-dim);
+  padding: 0.5rem 0.7rem;
+}
+
+input:focus, select:focus, textarea:focus { border-bottom-color: var(--yellow); }
+
+/* Dispatches */
+
+.hr-dispatch {
+  border: 0;
+  height: 4px;
+  margin: 1.5rem 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--yellow) 0 14px,
+    var(--bg) 14px 28px
+  );
+}
+
+/* Faction classes (optional) */
+.humans     { color: var(--humans); }
+.terminids  { color: var(--terminids); }
+.automaton  { color: var(--automaton); }
+.illuminate { color: var(--illuminate); }
+
+/* Galactic map: map on the left, planet info on the right */
+.map-layout {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.map-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.map-toolbar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* SVG canvas (viewBox and aspect-ratio stay in the HTML because they are dynamic) */
+.map-svg {
+  display: block;
+  width: 100%;
+  background: #0c1015;
+  border: 1px solid var(--line);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.map-svg:active { cursor: grabbing; }
+
+/* Planets: grey by default, colored by the faction that controls them */
+.map-svg circle {
+  fill: #888;
+  cursor: pointer;
+}
+
+.map-svg circle[data-owner='Humans']     { fill: var(--humans); }
+.map-svg circle[data-owner='Terminids']  { fill: var(--terminids); }
+.map-svg circle[data-owner='Automaton']  { fill: var(--automaton); }
+.map-svg circle[data-owner='Illuminate'] { fill: var(--illuminate); }
+
+.map-svg circle:hover    { filter: brightness(1.4); }
+.map-svg circle.selected { stroke: #fff; }
+
+/* Planet info panel */
+.map-info {
+  width: 350px;
+  flex-shrink: 0;
+}
+
+.map-info > div { margin-bottom: 1rem; }
+.map-info h4    { margin-bottom: 0.15rem; }
+.map-info p     { margin: 0; }
+.map-info p + p { margin-top: 0.4rem; }
+
+/* On narrow screens the panel goes below the map */
+@media (max-width: 900px) {
+  .map-layout { flex-direction: column; align-items: stretch; }
+  .map-main   { flex: none; width: 100%; }
+  .map-info   { width: 100%; }
+}
+
+/* Keyboard focus */
+:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 2px;
+}
+
+/* Scrollbars */
+* { scrollbar-width: thin; scrollbar-color: var(--yellow-dim) var(--panel); }
+
+/* Mobile */
+@media (max-width: 640px) {
+  main { padding: 1.25rem 0.9rem 3rem; }
+  th, td { padding: 0.5rem 0.55rem; font-size: 0.95rem; }
+  aside, .panel { padding: 0.85rem; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; animation: none !important; }
+}
+

@@ -1,0 +1,85 @@
+<h2>Galactic Map</h2>
+
+@if (planets().length) {
+  <div class="map-layout">
+
+    <div class="map-main">
+      <div class="map-toolbar">
+        <button (click)="zoomIn()">+</button>
+        <button (click)="zoomOut()">−</button>
+        <button (click)="reset()">Reset</button>
+      </div>
+
+      <svg #svg class="map-svg"
+           [attr.viewBox]="viewBox()"
+           [style.aspect-ratio]="aspect()"
+           (wheel)="onWheel($event, svg)"
+           (pointerdown)="onPointerDown($event)"
+           (pointermove)="onPointerMove($event, svg)"
+           (pointerup)="onPointerUp()"
+           (pointerleave)="onPointerUp()">
+
+        @for (p of planets(); track p.index) {
+          <circle
+            [attr.cx]="p.position.x"
+            [attr.cy]="-p.position.y"
+            [attr.r]="r()"
+            [attr.stroke-width]="r() * 0.4"
+            [attr.data-owner]="p.currentOwner"
+            [class.selected]="selected()?.index === p.index"
+            tabindex="0"
+            role="button"
+            (click)="select(p)"
+            (keydown.enter)="select(p)">
+            <title>{{ label(p.name) }}</title>
+          </circle>
+        }
+      </svg>
+    </div>
+
+    <aside class="map-info">
+      @if (selected(); as p) {
+        <h3>{{ label(p.name) }}</h3>
+        <div>
+          <h4>Sector:</h4>
+          <p>{{ label(p.sector) }}</p>
+        </div>
+        <div>
+          <h4>Controlled by:</h4>
+          <p>{{ p.currentOwner }}</p>
+        </div>
+        @if (p.currentOwner == "Humans") {
+            <div>
+              <h4>Control:</h4>
+              <p>{{ ((p.health / p.maxHealth) * 100).toFixed(3) }}%</p>
+            </div>
+        } @else {
+            <div>
+              <h4>Liberation:</h4>
+              <p>{{ ((1 - p.health / p.maxHealth) * 100).toFixed(3) }}%</p>
+            </div>
+        }
+        <div>
+          <h4>Resistence per hour:</h4>
+          <p>{{ p.regenPerSecond }}%/h</p>
+        </div>
+        <div>
+          <h4>Biome: {{p.biome.name}}</h4>
+          <p>{{p.biome.description}}</p>
+        </div>
+        <div>
+          <h4>Hazards:</h4>
+          @for (hazard of p.hazards; track $index) {
+            <p><b>{{hazard.name}}</b>: {{hazard.description}}</p>
+          }
+        </div>
+        <button (click)="selected.set(null)">X</button>
+      } @else {
+        <p>Click a planet to show it's info</p>
+      }
+    </aside>
+
+  </div>
+} @else {
+  <p>Cargando...</p>
+}

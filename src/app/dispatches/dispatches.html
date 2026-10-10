@@ -1,0 +1,15 @@
+<body>
+    <h2>Dispatches</h2>
+    <h3>History of Super Earth's dispatches</h3>
+    @if (dispatchData() != null) {
+        @for (dispatch of dispatchData(); track $index) {
+            <div>
+                <h4>Date: {{ dispatch.published }}</h4>
+                <p [innerHTML]="cleanMessage(dispatch.message)">Message:</p>
+            </div>
+            <hr class="hr-dispatch">
+        }
+    } @else {
+        <h4>Uh oh! Seems that the <span>Ministry of Truth</span> didn't give us permission to load the past dispatches!</h4>
+    }
+</body>
