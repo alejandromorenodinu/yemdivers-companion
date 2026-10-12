@@ -48,7 +48,7 @@
       @case (13) {
         <tr>
           <td>{{ taskLabel(tarea.type) }}</td>
-          <td>Planeta #{{ tarea.values[2] }}: {{ majorOrder.progress[$index] ? 'Controlado' : 'Sin controlar' }}</td>
+          <td>{{ getPlaneta(tarea.values[3]) }}: {{ majorOrder.progress[$index] ? 'Controlado' : 'Sin controlar' }}</td>
         </tr>
       }
       @default {
